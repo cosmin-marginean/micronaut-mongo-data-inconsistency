@@ -16,7 +16,7 @@ class BugTest {
     lateinit var repository: DocumentRepository
 
     @Inject
-    @field:Client("/")
+    @field:Client("http://localhost:8080")
     lateinit var httpClient: HttpClient
 
     @Test
@@ -31,7 +31,7 @@ class BugTest {
         repository.save(Document("john", "smith"))
         repository.save(Document("jane", "doe"))
         assertEquals(2, repository.findAll().toList().size)
-        val request = HttpRequest.GET<List<Document>>("http://localhost:8080/get-documents")
+        val request = HttpRequest.GET<List<Document>>("/get-documents")
         val response = httpClient.toBlocking().exchange(request, List::class.java)
         assertEquals(2, response.body().size)
     }
