@@ -1,0 +1,52 @@
+plugins {
+    id("org.jetbrains.kotlin.jvm") version "1.7.20"
+    id("org.jetbrains.kotlin.kapt") version "1.7.20"
+    id("org.jetbrains.kotlin.plugin.allopen") version "1.7.20"
+    id("io.micronaut.application") version "3.6.5"
+    id("io.micronaut.test-resources") version "3.6.5"
+}
+
+group = "test"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.test.*")
+    }
+}
+
+dependencies {
+    kapt 'io.micronaut:micronaut-inject-java'
+    kapt 'io.micronaut.data:micronaut-data-document-processor'
+    kapt 'io.micronaut.serde:micronaut-serde-processor'
+
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.20'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20'
+
+    implementation 'io.micronaut.data:micronaut-data-mongodb'
+    implementation 'io.micronaut.kotlin:micronaut-kotlin-runtime'
+    implementation 'io.micronaut:micronaut-inject-java'
+    implementation 'io.micronaut.serde:micronaut-serde-bson'
+    implementation 'io.micronaut.mongodb:micronaut-mongo-sync'
+
+    testRuntimeOnly 'io.micronaut:micronaut-http-server-netty'
+}
+
+application {
+    mainClass.set("com.test.TestAppKt")
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "17"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "17"
+}
